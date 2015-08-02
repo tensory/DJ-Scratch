@@ -1,5 +1,0 @@
-/Users/ari/Projects/Android/DjScratch/app/build/intermediates/classes/debug
-/Users/ari/Projects/Android/DjScratch/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-8d2b02ddef8c80fb094e5334b4e342fe0c70bba5.jar
-/Users/ari/Projects/Android/DjScratch/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-3587b76f400fc4c4e09c23575742088e3e683f0e.jar
-/Users/ari/Projects/Android/DjScratch/app/build/intermediates/pre-dexed/debug/classes-f643b6acfcbec6c10bada334226b0d4d0e1dd34d.jar
-/Users/ari/Projects/Android/DjScratch/app/build/intermediates/pre-dexed/debug/classes-ea52576130a9cf30cebaaed95f7fa77f160bf2f4.jar
