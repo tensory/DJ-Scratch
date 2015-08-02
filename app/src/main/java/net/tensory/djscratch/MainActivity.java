@@ -48,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
 //            fd1.getParcelFileDescriptor().close();
 //        } catch (IOException e) {}
 
-        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.nuyorica);
+        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.trumpet_sample);
         long[] params = {
                 fd0.getStartOffset(),
                 fd0.getLength(),

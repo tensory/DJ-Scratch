@@ -10,9 +10,6 @@
 static void playerEventCallback(void *clientData, SuperpoweredAdvancedAudioPlayerEvent event, void *value) {
     if (event == SuperpoweredAdvancedAudioPlayerEvent_LoadSuccess) {
         SuperpoweredAdvancedAudioPlayer *player = *((SuperpoweredAdvancedAudioPlayer **)clientData);
-        player->setBpm(123.0f);
-        player->setFirstBeatMs(40);
-        player->setPosition(player->firstBeatMs, false, false);
     }
 }
 
@@ -45,7 +42,7 @@ SuperpoweredPlayer::SuperpoweredPlayer(const char *path, int *params) : bufferSi
     player->open(path, params[0], params[1]);
 
     // sync mode?
-    player->syncMode = SuperpoweredAdvancedAudioPlayerSyncMode_TempoAndBeat;
+    player->syncMode = SuperpoweredAdvancedAudioPlayerSyncMode_Tempo;
 
     // Create the OpenSL ES engine.
     slCreateEngine(&openSLEngine, 0, NULL, 0, NULL, NULL);
