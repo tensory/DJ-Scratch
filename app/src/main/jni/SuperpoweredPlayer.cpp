@@ -20,7 +20,7 @@ static void openSLESCallback(SLAndroidSimpleBufferQueueItf caller, void *pContex
 void SuperpoweredPlayer::process(SLAndroidSimpleBufferQueueItf caller) {
     float *stereoBuffer = outputBuffer;
 
-    bool silence = !player->process(stereoBuffer, false, bufferSize, 1.0f, 0.0f, -1.0f);
+    bool silence = !player->process(stereoBuffer, false, bufferSize, vol, 0.0f, -1.0f);
     if (silence) {
         memset(stereoBuffer, 0, bufferSize * 4);
     } else {
