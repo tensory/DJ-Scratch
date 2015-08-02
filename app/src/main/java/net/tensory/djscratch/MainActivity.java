@@ -33,7 +33,6 @@ public class MainActivity extends ActionBarActivity {
         }
         if (samplerateString == null) samplerateString = "44100";
         if (buffersizeString == null) buffersizeString = "512";
-
         // Files under res/raw are not compressed, just copied into the APK. Get the offset and length to know where our files are located.
 //        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.lycka), fd1 = getResources().openRawResourceFd(R.raw.nuyorica);
 //        long[] params = {
@@ -49,11 +48,21 @@ public class MainActivity extends ActionBarActivity {
 //            fd1.getParcelFileDescriptor().close();
 //        } catch (IOException e) {}
 
+        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.nuyorica);
         long[] params = {
+                fd0.getStartOffset(),
+                fd0.getLength(),
                 Integer.parseInt(samplerateString),
                 Integer.parseInt(buffersizeString)
         };
-        // Arguments: path to the APK file, offset and length of the two resource files, sample rate, audio buffer size.
+
+        try {
+            fd0.getParcelFileDescriptor().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Arguments: path to the APK file, offset and length of the resource file, sample rate, audio buffer size.
         SuperpoweredPlayer(getPackageResourcePath(), params);
 
         // crossfader events
