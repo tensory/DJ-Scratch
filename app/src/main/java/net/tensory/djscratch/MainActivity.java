@@ -35,29 +35,33 @@ public class MainActivity extends ActionBarActivity {
         if (buffersizeString == null) buffersizeString = "512";
 
         // Files under res/raw are not compressed, just copied into the APK. Get the offset and length to know where our files are located.
-        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.lycka), fd1 = getResources().openRawResourceFd(R.raw.nuyorica);
+//        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.lycka), fd1 = getResources().openRawResourceFd(R.raw.nuyorica);
+//        long[] params = {
+//                fd0.getStartOffset(),
+//                fd0.getLength(),
+//                fd1.getStartOffset(),
+//                fd1.getLength(),
+//                Integer.parseInt(samplerateString),
+//                Integer.parseInt(buffersizeString)
+//        };
+//        try {
+//            fd0.getParcelFileDescriptor().close();
+//            fd1.getParcelFileDescriptor().close();
+//        } catch (IOException e) {}
+
         long[] params = {
-                fd0.getStartOffset(),
-                fd0.getLength(),
-                fd1.getStartOffset(),
-                fd1.getLength(),
                 Integer.parseInt(samplerateString),
                 Integer.parseInt(buffersizeString)
         };
-        try {
-            fd0.getParcelFileDescriptor().close();
-            fd1.getParcelFileDescriptor().close();
-        } catch (IOException e) {}
-
         // Arguments: path to the APK file, offset and length of the two resource files, sample rate, audio buffer size.
-        SuperpoweredExample(getPackageResourcePath(), params);
+        SuperpoweredPlayer(getPackageResourcePath(), params);
 
         // crossfader events
         final SeekBar crossfader = (SeekBar)findViewById(R.id.crossFader);
         crossfader.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                onCrossfader(progress);
+//                onCrossfader(progress);
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -65,30 +69,30 @@ public class MainActivity extends ActionBarActivity {
         });
 
         // fx fader events
-        final SeekBar fxfader = (SeekBar)findViewById(R.id.fxFader);
-        fxfader.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                onFxValue(progress);
-            }
-
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                onFxValue(seekBar.getProgress());
-            }
-
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                onFxOff();
-            }
-        });
-
-        // fx select event
-        final RadioGroup group = (RadioGroup)findViewById(R.id.radioGroup1);
-        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                RadioButton checkedRadioButton = (RadioButton)radioGroup.findViewById(checkedId);
-                onFxSelect(radioGroup.indexOfChild(checkedRadioButton));
-            }
-        });
+//        final SeekBar fxfader = (SeekBar)findViewById(R.id.fxFader);
+//        fxfader.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+//
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                onFxValue(progress);
+//            }
+//
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//                onFxValue(seekBar.getProgress());
+//            }
+//
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                onFxOff();
+//            }
+//        });
+//
+//        // fx select event
+//        final RadioGroup group = (RadioGroup)findViewById(R.id.radioGroup1);
+//        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+//                RadioButton checkedRadioButton = (RadioButton)radioGroup.findViewById(checkedId);
+//                onFxSelect(radioGroup.indexOfChild(checkedRadioButton));
+//            }
+//        });
     }
 
     public void SuperpoweredExample_PlayPause(View button) {  // Play/pause.
@@ -120,14 +124,14 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private native void SuperpoweredExample(String apkPath, long[] offsetAndLength);
+    private native void SuperpoweredPlayer(String apkPath, long[] offsetAndLength);
     private native void onPlayPause(boolean play);
-    private native void onCrossfader(int value);
-    private native void onFxSelect(int value);
-    private native void onFxOff();
-    private native void onFxValue(int value);
+//    private native void onCrossfader(int value);
+//    private native void onFxSelect(int value);
+//    private native void onFxOff();
+//    private native void onFxValue(int value);
 
     static {
-        System.loadLibrary("SuperpoweredExample");
+        System.loadLibrary("SuperpoweredPlayer");
     }
 }

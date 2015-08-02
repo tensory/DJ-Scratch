@@ -14,8 +14,8 @@ endif
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)  
-LOCAL_MODULE := SuperpoweredExample  
-LOCAL_SRC_FILES := SuperpoweredExample.cpp
+LOCAL_MODULE := SuperpoweredPlayer
+LOCAL_SRC_FILES := SuperpoweredPlayer.cpp
 LOCAL_LDLIBS := -llog -landroid -lOpenSLES 
 LOCAL_STATIC_LIBRARIES := Superpowered
 LOCAL_CFLAGS = -O3
