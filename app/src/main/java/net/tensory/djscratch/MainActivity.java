@@ -1,29 +1,107 @@
 package net.tensory.djscratch;
 
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.media.AudioManager;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
-import java.io.IOException;
+import android.media.AudioManager;
 import android.os.Build;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Button;
-import android.view.View;
+import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 
-public class MainActivity extends ActionBarActivity {
-    boolean playing = false;
+import net.tensory.djscratch.views.ScrollDetectingView;
+
+import java.io.IOException;
+
+public class MainActivity extends Activity implements ScrollDetectingView {
+    private GestureDetectorCompat mDetector;
+
+    @Override
+    public void onScrollStart() {
+        onPlayPause(true);
+    }
+
+    @Override
+    public void onScrollEnd() {
+        onPlayPause(false);
+    }
+
+    @Override
+    public void onFlingStart() {
+        onPlayPause(true);
+    }
+
+    @Override
+    public void onFlingEnd() {
+        onPlayPause(false);
+    }
+
+    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private ScrollDetectingView scrollDetector;
+        private boolean isGestureActive;
+
+        private static final String DEBUG_TAG = "Gestures";
+
+        public MyGestureListener(ScrollDetectingView view) {
+            this.scrollDetector = view;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent event) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent event1, MotionEvent event2,
+                               float velocityX, float velocityY) {
+            Log.d(DEBUG_TAG, "onFling: " + event1.toString()+event2.toString());
+            togglePlayPause(event1, event2);
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent event1, MotionEvent event2,
+                               float distanceX, float distanceY) {
+            Log.d(DEBUG_TAG, "onScroll: " + event1.toString()+event2.toString());
+            Log.d(DEBUG_TAG, "onScroll: " + "distanceY " + distanceY);
+            togglePlayPause(event1, event2);
+            return true;
+        }
+
+        private void togglePlayPause(MotionEvent event1, MotionEvent event2) {
+            if (event1.getAction() == MotionEvent.ACTION_DOWN && event2.getAction() == MotionEvent.ACTION_MOVE) {
+                if (!isGestureActive) {
+                    isGestureActive = true;
+                    onPlayPause(isGestureActive);
+                }
+            } else if (event1.getAction() == MotionEvent.ACTION_DOWN && event2.getAction() == MotionEvent.ACTION_UP) {
+                if (isGestureActive) {
+                    isGestureActive = false;
+                    onPlayPause(isGestureActive);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        this.mDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set up gesture detection.
+        mDetector = new GestureDetectorCompat(this, new MyGestureListener(this));
+
+        // Set up sound playback.
         // Get the device's sample rate and buffer size to enable low-latency Android audio output, if available.
         String samplerateString = null, buffersizeString = null;
         if (Build.VERSION.SDK_INT >= 17) {
@@ -33,20 +111,6 @@ public class MainActivity extends ActionBarActivity {
         }
         if (samplerateString == null) samplerateString = "44100";
         if (buffersizeString == null) buffersizeString = "512";
-        // Files under res/raw are not compressed, just copied into the APK. Get the offset and length to know where our files are located.
-//        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.lycka), fd1 = getResources().openRawResourceFd(R.raw.nuyorica);
-//        long[] params = {
-//                fd0.getStartOffset(),
-//                fd0.getLength(),
-//                fd1.getStartOffset(),
-//                fd1.getLength(),
-//                Integer.parseInt(samplerateString),
-//                Integer.parseInt(buffersizeString)
-//        };
-//        try {
-//            fd0.getParcelFileDescriptor().close();
-//            fd1.getParcelFileDescriptor().close();
-//        } catch (IOException e) {}
 
         AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.trumpet_sample);
         long[] params = {
@@ -64,51 +128,6 @@ public class MainActivity extends ActionBarActivity {
 
         // Arguments: path to the APK file, offset and length of the resource file, sample rate, audio buffer size.
         SuperpoweredPlayer(getPackageResourcePath(), params);
-
-        // crossfader events
-        final SeekBar crossfader = (SeekBar)findViewById(R.id.crossFader);
-        crossfader.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                onCrossfader(progress);
-            }
-
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-
-        // fx fader events
-//        final SeekBar fxfader = (SeekBar)findViewById(R.id.fxFader);
-//        fxfader.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-//
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                onFxValue(progress);
-//            }
-//
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//                onFxValue(seekBar.getProgress());
-//            }
-//
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//                onFxOff();
-//            }
-//        });
-//
-//        // fx select event
-//        final RadioGroup group = (RadioGroup)findViewById(R.id.radioGroup1);
-//        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-//                RadioButton checkedRadioButton = (RadioButton)radioGroup.findViewById(checkedId);
-//                onFxSelect(radioGroup.indexOfChild(checkedRadioButton));
-//            }
-//        });
-    }
-
-    public void SuperpoweredExample_PlayPause(View button) {  // Play/pause.
-        playing = !playing;
-        onPlayPause(playing);
-        Button b = (Button) findViewById(R.id.playPause);
-        b.setText(playing ? "Pause" : "Play");
     }
 
     @Override
@@ -134,11 +153,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private native void SuperpoweredPlayer(String apkPath, long[] offsetAndLength);
+
     private native void onPlayPause(boolean play);
-//    private native void onCrossfader(int value);
-//    private native void onFxSelect(int value);
-//    private native void onFxOff();
-//    private native void onFxValue(int value);
 
     static {
         System.loadLibrary("SuperpoweredPlayer");
