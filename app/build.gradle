@@ -25,6 +25,7 @@ android {
     }
 
     task ndkBuild(type: Exec) {
+        // ndk build command line for SuperpoweredSDK
         commandLine '/Users/ari/workspace/src/android-ndk-r10d/ndk-build', '-B', '-C', file('src/main/jni').absolutePath
     }
 
@@ -34,6 +35,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(dir: 'src/main/libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.loopj.android:android-async-http:1.4.8'
 }

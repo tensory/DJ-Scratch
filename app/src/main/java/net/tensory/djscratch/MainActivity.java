@@ -15,9 +15,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.codepath.oauth.OAuthLoginActivity;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import net.tensory.djscratch.rest.TwitterClient;
+import net.tensory.djscratch.rest.TwitterClientFactory;
 import net.tensory.djscratch.views.ScrollDetectingView;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -62,6 +68,39 @@ public class MainActivity extends OAuthLoginActivity<TwitterClient> implements S
 //                .commit();
         Button btnLogin = (Button) findViewById(R.id.btn_login);
         btnLogin.setEnabled(false);
+
+        TwitterClientFactory.getTwitterClient(this).getHomeTimeline(0, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                super.onSuccess(statusCode, headers, responseString);
+            }
+        });
     }
 
     @Override

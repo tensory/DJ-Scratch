@@ -14,7 +14,7 @@ import org.scribe.builder.api.TwitterApi;
  */
 public class TwitterClient extends OAuthBaseClient {
     public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class;
-    public static final String REST_URL = "http://api.twitter.com/1.1";
+    public static final String REST_URL = "https://api.twitter.com/1.1";
     public static final String REST_CONSUMER_KEY = "4qHMF0QAvNflm8LYXuySFfxzv";
     public static final String REST_CONSUMER_SECRET = "eP4FGE5AIKfT7CDmqZc8CC3kSNkr2hxrSJPaesB3X6CrpFwkM6";
     public static final String REST_CALLBACK_URL = "x-oauthflow-twitter://djscratch";
