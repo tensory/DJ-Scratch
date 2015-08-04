@@ -1,6 +1,5 @@
 package net.tensory.djscratch.fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,15 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.tensory.djscratch.R;
+import net.tensory.djscratch.rest.Consumer;
+import net.tensory.djscratch.rest.TimelineRequest;
+import net.tensory.djscratch.timeline.TweetsAdapter;
+import net.tensory.djscratch.timeline.TweetsDataSource;
 
 /**
  * View for the Twitter timeline.
  */
-public class HomeTimelineFragment extends Fragment {
+public class TimelineFragment extends Fragment implements Consumer<TweetsDataSource> {
+    TweetsAdapter tweetsAdapter;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
+        super.onActivityCreated(savedInstanceState);
+        tweetsAdapter = new TweetsAdapter();
     }
 
     @Override
@@ -29,6 +34,23 @@ public class HomeTimelineFragment extends Fragment {
 
         RecyclerView rvTweetsList = (RecyclerView) view.findViewById(R.id.rv_tweets_list);
         rvTweetsList.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        rvTweetsList.setAdapter(tweetsAdapter);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new TimelineRequest(this.getActivity()).get(this);
+    }
+
+    @Override
+    public void onSuccess(TweetsDataSource result) {
+        tweetsAdapter.setData(result);
+    }
+
+    @Override
+    public void onFailure(int statusCode) {
+
     }
 }

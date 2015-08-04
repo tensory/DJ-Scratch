@@ -38,4 +38,5 @@ dependencies {
     compile fileTree(dir: 'src/main/libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.loopj.android:android-async-http:1.4.8'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
 }

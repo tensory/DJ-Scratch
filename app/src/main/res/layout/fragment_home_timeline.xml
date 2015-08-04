@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.tensory.djscratch.fragments.HomeTimelineFragment">
+    tools:context="net.tensory.djscratch.fragments.TimelineFragment">
     <android.support.v7.widget.RecyclerView
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/rv_tweets_list"

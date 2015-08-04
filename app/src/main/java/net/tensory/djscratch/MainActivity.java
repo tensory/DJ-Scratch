@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import net.tensory.djscratch.fragments.HomeTimelineFragment;
+import net.tensory.djscratch.fragments.TimelineFragment;
 import net.tensory.djscratch.fragments.LoginFragment;
 import net.tensory.djscratch.rest.TwitterClientFactory;
 import net.tensory.djscratch.views.ScrollDetectingView;
@@ -222,7 +222,7 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
 
     private void showTimelineFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, new HomeTimelineFragment());
+        ft.replace(R.id.fragment_container, new TimelineFragment());
         ft.commit();
     }
 }
