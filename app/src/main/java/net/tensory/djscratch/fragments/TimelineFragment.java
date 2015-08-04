@@ -28,7 +28,7 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
 
         RecyclerView rvTweetsList = (RecyclerView) view.findViewById(R.id.rv_tweets_list);
         rvTweetsList.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        
+
         tweetsAdapter = new TweetsAdapter(this.getActivity());
         rvTweetsList.setAdapter(tweetsAdapter);
         return view;

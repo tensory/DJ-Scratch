@@ -9,10 +9,6 @@ import android.view.ViewGroup;
 
 import net.tensory.djscratch.R;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * View holder for an individual tweet.
  */
@@ -34,9 +30,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     @Override
     public void onBindViewHolder(TweetViewHolder tweetViewHolder, int i) {
         Tweet tweet = tweetDataSource.getTweets().get(i);
-
-        Log.i("Adapter", tweet.getText());
-
+        tweetViewHolder.setAuthorHandle(tweet.getScreenName());
+        tweetViewHolder.setTweetText(tweet.getText());
     }
 
     public void setData(TweetsDataSource source) {
