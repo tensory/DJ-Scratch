@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import net.tensory.djscratch.fragments.HomeTimelineFragment;
 import net.tensory.djscratch.fragments.LoginFragment;
 import net.tensory.djscratch.rest.TwitterClientFactory;
 import net.tensory.djscratch.views.ScrollDetectingView;
@@ -97,11 +98,13 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
         });
     }
 
+    // On successful Twitter login response
     @Override
     public void onSuccess() {
-        Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
+        showTimelineFragment();
     }
 
+    // On Twitter login failure
     @Override
     public void onFailure(Exception e) {
         Toast.makeText(this, "Shanope", Toast.LENGTH_SHORT).show();
@@ -210,9 +213,16 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
         System.loadLibrary("SuperpoweredPlayer");
     }
 
+    // View setup
     private void setInitialView() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, new LoginFragment());
+        ft.commit();
+    }
+
+    private void showTimelineFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, new HomeTimelineFragment());
         ft.commit();
     }
 }
