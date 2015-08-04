@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">DJ Scratch</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Error handling -->
+    <string name="txt_login_error">Login error</string>
 </resources>

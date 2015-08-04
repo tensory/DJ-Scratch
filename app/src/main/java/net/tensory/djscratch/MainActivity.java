@@ -10,19 +10,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import net.tensory.djscratch.fragments.TimelineFragment;
 import net.tensory.djscratch.fragments.LoginFragment;
-import net.tensory.djscratch.rest.TwitterClientFactory;
+import net.tensory.djscratch.fragments.TimelineFragment;
 import net.tensory.djscratch.views.ScrollDetectingView;
-
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -54,50 +46,6 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
         onPlayPause(false);
     }
 
-    public void onLoginSuccess() {
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container,
-//                        new HomeTimelineFragment(),
-//                        HomeTimelineFragment.TAG)
-//                .commit();
-        Button btnLogin = (Button) findViewById(R.id.btn_login);
-        btnLogin.setEnabled(false);
-
-        TwitterClientFactory.getTwitterClient(this).getHomeTimeline(0, new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                super.onSuccess(statusCode, headers, responseString);
-            }
-        });
-    }
-
     // On successful Twitter login response
     @Override
     public void onSuccess() {
@@ -107,7 +55,7 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
     // On Twitter login failure
     @Override
     public void onFailure(Exception e) {
-        Toast.makeText(this, "Shanope", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.txt_login_error), Toast.LENGTH_SHORT).show();
         e.printStackTrace();
 
     }

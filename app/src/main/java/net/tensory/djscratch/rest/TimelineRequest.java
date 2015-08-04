@@ -1,7 +1,6 @@
 package net.tensory.djscratch.rest;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
