@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="@dimen/tweet_padding">
+    android:padding="@dimen/tweet_padding"
+    android:background="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/iv_profile_image"
@@ -12,7 +13,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/tweet_padding">
+
         <TextView
             android:id="@+id/tv_twitter_handle"
             android:layout_width="match_parent"

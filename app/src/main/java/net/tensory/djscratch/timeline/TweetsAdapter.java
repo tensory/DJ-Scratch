@@ -32,6 +32,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         Tweet tweet = tweetDataSource.getTweets().get(i);
         tweetViewHolder.setAuthorHandle(tweet.getScreenName());
         tweetViewHolder.setTweetText(tweet.getText());
+        tweetViewHolder.setProfileImage(context, tweet.getProfileImageUrl());
     }
 
     public void setData(TweetsDataSource source) {
