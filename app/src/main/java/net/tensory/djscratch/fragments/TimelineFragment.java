@@ -21,12 +21,6 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
     TweetsAdapter tweetsAdapter;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        tweetsAdapter = new TweetsAdapter();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -34,6 +28,8 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
 
         RecyclerView rvTweetsList = (RecyclerView) view.findViewById(R.id.rv_tweets_list);
         rvTweetsList.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        
+        tweetsAdapter = new TweetsAdapter(this.getActivity());
         rvTweetsList.setAdapter(tweetsAdapter);
         return view;
     }
@@ -47,6 +43,7 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
     @Override
     public void onSuccess(TweetsDataSource result) {
         tweetsAdapter.setData(result);
+        tweetsAdapter.notifyDataSetChanged();
     }
 
     @Override
