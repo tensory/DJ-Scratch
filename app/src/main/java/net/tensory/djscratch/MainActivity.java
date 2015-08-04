@@ -1,24 +1,33 @@
 package net.tensory.djscratch;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.codepath.oauth.OAuthLoginActivity;
+
+import net.tensory.djscratch.rest.TwitterClient;
 import net.tensory.djscratch.views.ScrollDetectingView;
 
 import java.io.IOException;
 
-public class MainActivity extends Activity implements ScrollDetectingView {
-    private GestureDetectorCompat mDetector;
+/**
+ * Activity displaying the user's Twitter timeline.
+ * Reacts to scrolling events by playing a sound.
+ */
+
+public class MainActivity extends OAuthLoginActivity<TwitterClient> implements ScrollDetectingView {
+//    private GestureDetectorCompat mDetector;
 
     @Override
     public void onScrollStart() {
@@ -38,6 +47,30 @@ public class MainActivity extends Activity implements ScrollDetectingView {
     @Override
     public void onFlingEnd() {
         onPlayPause(false);
+    }
+
+    @Override
+    /**
+     * On successful login to Twitter.
+     */
+    public void onLoginSuccess() {
+        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container,
+//                        new HomeTimelineFragment(),
+//                        HomeTimelineFragment.TAG)
+//                .commit();
+        Button btnLogin = (Button) findViewById(R.id.btn_login);
+        btnLogin.setEnabled(false);
+    }
+
+    @Override
+    /**
+     * On failed login to Twitter.
+     */
+    public void onLoginFailure(Exception e) {
+        e.printStackTrace();
+        Toast.makeText(this, "Failed to login", Toast.LENGTH_SHORT).show();
     }
 
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -86,20 +119,23 @@ public class MainActivity extends Activity implements ScrollDetectingView {
             }
         }
     }
-
+/*
     @Override
     public boolean onTouchEvent(MotionEvent event){
         this.mDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupLoginView();
+
         // Set up gesture detection.
-        mDetector = new GestureDetectorCompat(this, new MyGestureListener(this));
+        // mDetector = new GestureDetectorCompat(this, new MyGestureListener(this));
 
         // Set up sound playback.
         // Get the device's sample rate and buffer size to enable low-latency Android audio output, if available.
@@ -158,5 +194,15 @@ public class MainActivity extends Activity implements ScrollDetectingView {
 
     static {
         System.loadLibrary("SuperpoweredPlayer");
+    }
+
+    private void setupLoginView() {
+        Button btnLogin = (Button) findViewById(R.id.btn_login);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getClient().connect();
+            }
+        });
     }
 }
