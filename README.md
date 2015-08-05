@@ -14,6 +14,5 @@ Uses the [CodePath OAuth client](https://github.com/codepath/android-oauth-handl
 
 ## Credits
 
-* [Speaker icon by Vania Portanov](https://thenounproject.com/term/speaker/10453/)
-* [Mute icon by Vania Portanov](https://thenounproject.com/term/mute/10454/)
+* Icons from [Google Material Design Icons](https://www.google.com/design/icons/)
 * [Sound effect by Xtragamr](https://www.freesound.org/people/xtrgamr/sounds/257777/)
