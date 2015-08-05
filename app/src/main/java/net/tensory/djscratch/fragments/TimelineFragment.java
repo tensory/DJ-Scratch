@@ -8,6 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +31,42 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
     private TweetsAdapter tweetsAdapter;
     private SoundController soundController;
     private boolean isPlaying;
+    private boolean isMuted;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_timeline, menu);
+        menu.findItem(R.id.volume_on).setVisible(!isMuted);
+        menu.findItem(R.id.volume_off).setVisible(isMuted);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.volume_on:
+                isPlaying = false;
+                if (soundController != null) {
+                    soundController.stop();
+                }
+                isMuted = true;
+                actionBarActivity.supportInvalidateOptionsMenu();
+                return true;
+            case R.id.volume_off:
+                isMuted = false;
+                actionBarActivity.supportInvalidateOptionsMenu();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -113,7 +152,7 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
     }
 
     private void startPlaying() {
-        if (!isPlaying) {
+        if (!isPlaying && !isMuted) {
             soundController.start();
             isPlaying = true;
         }

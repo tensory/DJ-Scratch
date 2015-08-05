@@ -3,6 +3,8 @@
 
     <string name="app_name">DJ Scratch</string>
     <string name="action_settings">Settings</string>
+    <string name="action_mute">Mute</string>
+    <string name="action_unmute">Unmute</string>
 
     <!-- Error handling -->
     <string name="txt_login_error">Login error</string>
