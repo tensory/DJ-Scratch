@@ -7,18 +7,19 @@ import android.widget.AbsListView;
  * a previous onScroll event state with the new one.
  */
 class ScrollStateManager {
-    private int currentScrollState;
+    // 0 = penultimate scroll state
+    // 1 = last scroll state
+    private int[] currentScrollState;
 
     public ScrollStateManager(int scrollState) {
-        currentScrollState = scrollState;
+        currentScrollState = new int[2];
+        currentScrollState[0] = 0;
+        currentScrollState[1] = scrollState;
     }
 
     public void setNewScrollState(int newScrollState) {
-        currentScrollState = newScrollState;
-    }
-
-    public int getScrollState() {
-        return currentScrollState;
+        currentScrollState[0] = currentScrollState[1];
+        currentScrollState[1] = newScrollState;
     }
 
     /**
@@ -46,5 +47,17 @@ class ScrollStateManager {
      */
     public static final int getFling() {
         return AbsListView.OnScrollListener.SCROLL_STATE_FLING;
+    }
+
+    public boolean isIdle() {
+        return currentScrollState[1] == getIdle();
+    }
+
+    public boolean isScrolling() {
+        return currentScrollState[0] != getScroll() && currentScrollState[1] == getScroll();
+    }
+
+    public boolean wasFlung() {
+        return currentScrollState[0] != getFling() && currentScrollState[1] == getFling();
     }
 }

@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import net.tensory.djscratch.fragments.LoginFragment;
 import net.tensory.djscratch.fragments.TimelineFragment;
-import net.tensory.djscratch.views.ScrollDetectingView;
+import net.tensory.djscratch.sound.SoundController;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ import java.io.IOException;
  * Reacts to scrolling events by playing a sound.
  */
 
-public class MainActivity extends FragmentActivity implements ScrollDetectingView, LoginFragment.OnLoginResponseListener {
+public class MainActivity extends FragmentActivity implements LoginFragment.OnLoginResponseListener, SoundController {
 
     // On successful Twitter login response
     @Override
@@ -35,13 +35,6 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
         e.printStackTrace();
     }
 
-/*
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        this.mDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
-*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +71,7 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
         SuperpoweredPlayer(getPackageResourcePath(), params);
     }
 
+    // Superpowered initialization
     private native void SuperpoweredPlayer(String apkPath, long[] offsetAndLength);
 
     private native void onPlayPause(boolean play);
@@ -85,28 +79,6 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
     static {
         System.loadLibrary("SuperpoweredPlayer");
     }
-
-    // Scrolling interactions
-    @Override
-    public void onScrollStart() {
-        onPlayPause(true);
-    }
-
-    @Override
-    public void onScrollEnd() {
-        onPlayPause(false);
-    }
-
-    @Override
-    public void onFlingStart() {
-        onPlayPause(true);
-    }
-
-    @Override
-    public void onFlingEnd() {
-        onPlayPause(false);
-    }
-
 
     // View setup
     private void setInitialView() {
@@ -119,5 +91,17 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, new TimelineFragment());
         ft.commit();
+    }
+
+    // SoundController.start
+    @Override
+    public void start() {
+        onPlayPause(true);
+    }
+
+    // SoundController.stop
+    @Override
+    public void stop() {
+        onPlayPause(false);
     }
 }
