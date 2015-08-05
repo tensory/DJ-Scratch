@@ -5,10 +5,8 @@ import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import net.tensory.djscratch.fragments.LoginFragment;
@@ -48,7 +46,6 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnL
     }
 
     private void initializeSuperpowered() {
-
         // Set up sound playback.
         // Get the device's sample rate and buffer size to enable low-latency Android audio output, if available.
         String samplerateString = null, buffersizeString = null;
