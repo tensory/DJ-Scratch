@@ -5,7 +5,7 @@ package net.tensory.djscratch.listeners;
  * with OnScrollGestureListener.
  */
 public interface OnScrollEventCallback {
-    public void onStop();
+    public void onScrollStop();
 
     public void onScrollUp();
 

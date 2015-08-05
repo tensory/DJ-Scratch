@@ -18,7 +18,7 @@ public class OnScrollGestureListener extends RecyclerView.OnScrollListener {
         scrollStateManager.setNewScrollState(newState);
 
         if (scrollStateManager.isIdle() && onScrollEventCallback != null) {
-            onScrollEventCallback.onStop();
+            onScrollEventCallback.onScrollStop();
         }
     }
 

@@ -42,6 +42,11 @@ public class MainActivity extends FragmentActivity implements LoginFragment.OnLo
 
         setInitialView();
 
+        initializeSuperpowered();
+    }
+
+    private void initializeSuperpowered() {
+
         // Set up sound playback.
         // Get the device's sample rate and buffer size to enable low-latency Android audio output, if available.
         String samplerateString = null, buffersizeString = null;
@@ -53,7 +58,8 @@ public class MainActivity extends FragmentActivity implements LoginFragment.OnLo
         if (samplerateString == null) samplerateString = "44100";
         if (buffersizeString == null) buffersizeString = "512";
 
-        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.trumpet_sample);
+        // https://www.freesound.org/people/xtrgamr/sounds/257777/
+        AssetFileDescriptor fd0 = getResources().openRawResourceFd(R.raw.vinyl_scratch);
         long[] params = {
                 fd0.getStartOffset(),
                 fd0.getLength(),

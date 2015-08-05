@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import net.tensory.djscratch.R;
 import net.tensory.djscratch.listeners.OnScrollEventCallback;
 import net.tensory.djscratch.listeners.OnScrollGestureListener;
-import net.tensory.djscratch.sound.SoundController;
 import net.tensory.djscratch.rest.Consumer;
 import net.tensory.djscratch.rest.TimelineRequest;
+import net.tensory.djscratch.sound.SoundController;
 import net.tensory.djscratch.timeline.TweetsAdapter;
 import net.tensory.djscratch.timeline.TweetsDataSource;
 
@@ -70,9 +70,8 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
     }
 
     // Methods for sound manipulation.
-
     @Override
-    public void onStop() {
+    public void onScrollStop() {
         soundController.stop();
         isPlaying = false;
     }
