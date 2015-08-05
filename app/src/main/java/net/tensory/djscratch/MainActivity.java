@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import net.tensory.djscratch.fragments.LoginFragment;
@@ -20,7 +22,7 @@ import java.io.IOException;
  * Reacts to scrolling events by playing a sound.
  */
 
-public class MainActivity extends FragmentActivity implements LoginFragment.OnLoginResponseListener, SoundController {
+public class MainActivity extends ActionBarActivity implements LoginFragment.OnLoginResponseListener, SoundController {
 
     // On successful Twitter login response
     @Override

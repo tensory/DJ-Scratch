@@ -3,8 +3,10 @@ package net.tensory.djscratch.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import net.tensory.djscratch.timeline.TweetsDataSource;
  * View for the Twitter timeline.
  */
 public class TimelineFragment extends Fragment implements Consumer<TweetsDataSource>, OnScrollEventCallback {
+    private ActionBarActivity actionBarActivity;
     private TweetsAdapter tweetsAdapter;
     private SoundController soundController;
     private boolean isPlaying;
@@ -31,6 +34,13 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
         super.onAttach(activity);
         try {
             soundController = (SoundController) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement SoundController");
+        }
+
+        try {
+            actionBarActivity = (ActionBarActivity) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement SoundController");
@@ -49,6 +59,12 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
 
         tweetsAdapter = new TweetsAdapter(this.getActivity());
         rvTweetsList.setAdapter(tweetsAdapter);
+
+        // Configure toolbar
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            actionBarActivity.setSupportActionBar(toolbar);
+        }
         return view;
     }
 

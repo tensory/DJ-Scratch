@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
+        <item name="android:colorPrimary">@color/purple_main</item>
+        <item name="android:colorPrimaryDark">@color/purple_dark</item>
+        <item name="android:colorAccent">@color/magenta</item>
+    </style>
+</resources>
