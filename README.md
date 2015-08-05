@@ -13,6 +13,7 @@ Uses the Superpowered SDK to manipulate the audio clip. To build, you will need 
 Uses the [CodePath OAuth client](https://github.com/codepath/android-oauth-handler) for Twitter integration.
 
 ## Credits
-[Speaker icon by Vania Portanov](https://thenounproject.com/term/speaker/10453/)
-[Mute icon by Vania Portanov](https://thenounproject.com/term/mute/10454/)
-[Sound effect by Xtragamr](https://www.freesound.org/people/xtrgamr/sounds/257777/)
+
+* [Speaker icon by Vania Portanov](https://thenounproject.com/term/speaker/10453/)
+* [Mute icon by Vania Portanov](https://thenounproject.com/term/mute/10454/)
+* [Sound effect by Xtragamr](https://www.freesound.org/people/xtrgamr/sounds/257777/)
