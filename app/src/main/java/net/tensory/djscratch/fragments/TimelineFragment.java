@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.tensory.djscratch.R;
+import net.tensory.djscratch.listeners.OnScrollGestureListener;
 import net.tensory.djscratch.rest.Consumer;
 import net.tensory.djscratch.rest.TimelineRequest;
 import net.tensory.djscratch.timeline.TweetsAdapter;
@@ -28,6 +29,7 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
 
         RecyclerView rvTweetsList = (RecyclerView) view.findViewById(R.id.rv_tweets_list);
         rvTweetsList.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        rvTweetsList.addOnScrollListener(new OnScrollGestureListener());
 
         tweetsAdapter = new TweetsAdapter(this.getActivity());
         rvTweetsList.setAdapter(tweetsAdapter);

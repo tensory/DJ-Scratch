@@ -7,9 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.widget.Toast;
 
 import net.tensory.djscratch.fragments.LoginFragment;
@@ -24,27 +21,6 @@ import java.io.IOException;
  */
 
 public class MainActivity extends FragmentActivity implements ScrollDetectingView, LoginFragment.OnLoginResponseListener {
-//    private GestureDetectorCompat mDetector;
-
-    @Override
-    public void onScrollStart() {
-        onPlayPause(true);
-    }
-
-    @Override
-    public void onScrollEnd() {
-        onPlayPause(false);
-    }
-
-    @Override
-    public void onFlingStart() {
-        onPlayPause(true);
-    }
-
-    @Override
-    public void onFlingEnd() {
-        onPlayPause(false);
-    }
 
     // On successful Twitter login response
     @Override
@@ -57,62 +33,14 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
     public void onFailure(Exception e) {
         Toast.makeText(this, getString(R.string.txt_login_error), Toast.LENGTH_SHORT).show();
         e.printStackTrace();
-
     }
 
-    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-        private ScrollDetectingView scrollDetector;
-        private boolean isGestureActive;
-
-        private static final String DEBUG_TAG = "Gestures";
-
-        public MyGestureListener(ScrollDetectingView view) {
-            this.scrollDetector = view;
-        }
-
-        @Override
-        public boolean onDown(MotionEvent event) {
-            return true;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent event1, MotionEvent event2,
-                               float velocityX, float velocityY) {
-            Log.d(DEBUG_TAG, "onFling: " + event1.toString()+event2.toString());
-            togglePlayPause(event1, event2);
-            return true;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent event1, MotionEvent event2,
-                               float distanceX, float distanceY) {
-            Log.d(DEBUG_TAG, "onScroll: " + event1.toString()+event2.toString());
-            Log.d(DEBUG_TAG, "onScroll: " + "distanceY " + distanceY);
-            togglePlayPause(event1, event2);
-            return true;
-        }
-
-        private void togglePlayPause(MotionEvent event1, MotionEvent event2) {
-            if (event1.getAction() == MotionEvent.ACTION_DOWN && event2.getAction() == MotionEvent.ACTION_MOVE) {
-                if (!isGestureActive) {
-                    isGestureActive = true;
-                    onPlayPause(isGestureActive);
-                }
-            } else if (event1.getAction() == MotionEvent.ACTION_DOWN && event2.getAction() == MotionEvent.ACTION_UP) {
-                if (isGestureActive) {
-                    isGestureActive = false;
-                    onPlayPause(isGestureActive);
-                }
-            }
-        }
-    }
 /*
     @Override
     public boolean onTouchEvent(MotionEvent event){
         this.mDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
-
 */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +48,6 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
         setContentView(R.layout.activity_main);
 
         setInitialView();
-
-        // Set up gesture detection.
-        // mDetector = new GestureDetectorCompat(this, new MyGestureListener(this));
 
         // Set up sound playback.
         // Get the device's sample rate and buffer size to enable low-latency Android audio output, if available.
@@ -160,6 +85,28 @@ public class MainActivity extends FragmentActivity implements ScrollDetectingVie
     static {
         System.loadLibrary("SuperpoweredPlayer");
     }
+
+    // Scrolling interactions
+    @Override
+    public void onScrollStart() {
+        onPlayPause(true);
+    }
+
+    @Override
+    public void onScrollEnd() {
+        onPlayPause(false);
+    }
+
+    @Override
+    public void onFlingStart() {
+        onPlayPause(true);
+    }
+
+    @Override
+    public void onFlingEnd() {
+        onPlayPause(false);
+    }
+
 
     // View setup
     private void setInitialView() {
