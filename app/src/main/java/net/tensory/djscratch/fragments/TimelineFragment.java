@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import net.tensory.djscratch.R;
+import net.tensory.djscratch.listeners.EndlessScrollListener;
+import net.tensory.djscratch.listeners.OnListItemScrollListener;
 import net.tensory.djscratch.listeners.OnScrollEventCallback;
 import net.tensory.djscratch.listeners.OnScrollGestureListener;
 import net.tensory.djscratch.rest.Consumer;
@@ -27,17 +29,69 @@ import net.tensory.djscratch.timeline.TweetsDataSource;
 /**
  * View for the Twitter timeline.
  */
-public class TimelineFragment extends Fragment implements Consumer<TweetsDataSource>, OnScrollEventCallback {
+public class TimelineFragment extends Fragment implements OnScrollEventCallback {
     private ActionBarActivity actionBarActivity;
     private TweetsAdapter tweetsAdapter;
     private SoundController soundController;
     private boolean isPlaying;
     private boolean isMuted;
+    private RequestLoader requestLoader;
+    private int startingPage = 0;
+
+    private abstract class RequestLoader implements Consumer<TweetsDataSource>, EndlessScrollListener.EndlessScrollLoader {
+        private boolean isLoading;
+
+        @Override
+        public void load(int page) {
+            isLoading = true;
+            onLoad(page);
+        }
+
+        protected abstract void onLoad(int page);
+
+        @Override
+        public void setLoading(boolean loading) {
+            this.isLoading = loading;
+        }
+
+        @Override
+        public boolean isLoading() {
+            return isLoading;
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        this.requestLoader = new RequestLoader() {
+            @Override
+            protected void onLoad(int page) {
+                new TimelineRequest(getActivity()).get(page, this);
+            }
+
+            @Override
+            public void onSuccess(TweetsDataSource result) {
+                tweetsAdapter.setData(result);
+                this.setLoading(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode) {
+                this.setLoading(false);
+                String message;
+                switch (statusCode) {
+                    case 429:
+                        message = "Somebody called the cops!\nRate limit exceeded.";
+                        break;
+                    default:
+                        message = "Could not retrieve tweets";
+                        break;
+                }
+                Toast.makeText(getActivity(), message, (statusCode == 429) ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     @Override
@@ -96,6 +150,7 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
         RecyclerView rvTweetsList = (RecyclerView) view.findViewById(R.id.rv_tweets_list);
         rvTweetsList.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         rvTweetsList.addOnScrollListener(new OnScrollGestureListener(this));
+        rvTweetsList.addOnScrollListener(new OnListItemScrollListener(new EndlessScrollListener(requestLoader, 0)));
 
         tweetsAdapter = new TweetsAdapter(this.getActivity());
         rvTweetsList.setAdapter(tweetsAdapter);
@@ -111,27 +166,7 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
     @Override
     public void onResume() {
         super.onResume();
-        new TimelineRequest(this.getActivity()).get(this);
-    }
-
-    @Override
-    public void onSuccess(TweetsDataSource result) {
-        tweetsAdapter.setData(result);
-        tweetsAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onFailure(int statusCode) {
-        String message;
-        switch (statusCode) {
-            case 429:
-                message = "Rate limit exceeded";
-                break;
-            default:
-                message = "Could not retrieve tweets";
-                break;
-        }
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        requestLoader.load(startingPage);
     }
 
     // Methods for sound manipulation.

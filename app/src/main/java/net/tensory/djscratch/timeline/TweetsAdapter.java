@@ -2,7 +2,6 @@ package net.tensory.djscratch.timeline;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     }
 
     public void setData(TweetsDataSource source) {
-        this.tweetDataSource = source;
+        if (this.getItemCount() > 0) {
+            for (Tweet t : source.getTweets()) {
+                this.tweetDataSource.add(t);
+            }
+        } else {
+            this.tweetDataSource = source;
+        }
         notifyDataSetChanged();
     }
 

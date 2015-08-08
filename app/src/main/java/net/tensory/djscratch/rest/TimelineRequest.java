@@ -20,8 +20,8 @@ public class TimelineRequest {
         this.context = context;
     }
 
-    public void get(final Consumer<TweetsDataSource> consumer) {
-        TwitterClientFactory.getTwitterClient(this.context).getHomeTimeline(0, new JsonHttpResponseHandler() {
+    public void get(int page, final Consumer<TweetsDataSource> consumer) {
+        TwitterClientFactory.getTwitterClient(this.context).getHomeTimeline(page, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
