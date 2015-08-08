@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import net.tensory.djscratch.R;
 import net.tensory.djscratch.listeners.OnScrollEventCallback;
@@ -121,7 +122,16 @@ public class TimelineFragment extends Fragment implements Consumer<TweetsDataSou
 
     @Override
     public void onFailure(int statusCode) {
-        // no-op
+        String message;
+        switch (statusCode) {
+            case 429:
+                message = "Rate limit exceeded";
+                break;
+            default:
+                message = "Could not retrieve tweets";
+                break;
+        }
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     // Methods for sound manipulation.
